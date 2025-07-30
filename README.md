@@ -1,4 +1,5 @@
 🏥 HealthCare — Hospital & Appointment Management System
+
 An AI-enhanced, fully responsive Hospital Management System built using React (Class Components). It facilitates hospital registration, doctor onboarding, patient management, and seamless appointment booking — complete with revenue tracking dashboards and smart filters.
 
 🚀 Features
