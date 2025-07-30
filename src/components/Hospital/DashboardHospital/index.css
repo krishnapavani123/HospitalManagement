@@ -1,0 +1,87 @@
+/* File: DashboardHospital.css */
+
+.dashboard-container {
+  min-height: 100vh;
+  padding: 3rem 1rem;
+  background: linear-gradient(to bottom right, #f0f9ff, #f7e8ff);
+}
+
+.dashboard-title {
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: #6b46c1;
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.stat-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 1.5rem;
+  margin-bottom: 2.5rem;
+}
+
+.card {
+  background: white;
+  padding: 1.5rem;
+  border-radius: 1rem;
+  border-left: 6px solid #805ad5;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.05);
+  transition: transform 0.2s ease;
+}
+
+.card:hover {
+  transform: scale(1.03);
+}
+
+.card-title {
+  font-size: 1rem;
+  color: #4a5568;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+}
+
+.card-value {
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: #2b6cb0;
+}
+
+.analytics-section {
+  max-width: 960px;
+  margin: 0 auto;
+  background: white;
+  padding: 1.5rem 2rem;
+  border-radius: 1rem;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.04);
+}
+
+.analytics-section h3 {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: #6b46c1;
+  margin-bottom: 1rem;
+}
+
+.analytics-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.analytics-table th,
+.analytics-table td {
+  text-align: left;
+  padding: 0.75rem 0.5rem;
+  border-bottom: 1px solid #edf2f7;
+  font-size: 0.95rem;
+}
+
+.analytics-table th {
+  background-color: #f3e8ff;
+  color: #5a67d8;
+}
+
+.analytics-table td.amount {
+  color: #38a169;
+  font-weight: bold;
+}
