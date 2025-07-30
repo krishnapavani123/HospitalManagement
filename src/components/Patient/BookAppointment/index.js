@@ -10,7 +10,7 @@ class BookAppointment extends Component {
         name: 'Dr. Anjali Rao',
         specialization: 'Cardiology',
         hospital: 'Apollo',
-        availableSlots: ['2025-08-01 10:00', '2025-08-01 14:00'],
+        availableSlots: ['2025-08-01T10:00', '2025-08-01T14:00'],
         fee: 700,
       },
       {
@@ -18,7 +18,7 @@ class BookAppointment extends Component {
         name: 'Dr. Vinay Mehta',
         specialization: 'Pediatrics',
         hospital: 'Yashoda',
-        availableSlots: ['2025-08-01 09:00', '2025-08-01 11:30'],
+        availableSlots: ['2025-08-01T09:00', '2025-08-01T11:30'],
         fee: 500,
       },
     ],
@@ -59,16 +59,7 @@ class BookAppointment extends Component {
 
   handleBooking = (e) => {
     e.preventDefault();
-    const { selectedDoctor, selectedSlot, amount } = this.state;
-
-    const updatedDoctors = this.state.doctors.map((doc) =>
-      doc.id === selectedDoctor.id
-        ? {
-            ...doc,
-            availableSlots: doc.availableSlots.filter((slot) => slot !== selectedSlot),
-          }
-        : doc
-    );
+    const { selectedDoctor, selectedSlot, amount, doctors } = this.state;
 
     const newBooking = {
       doctor: selectedDoctor.name,
@@ -77,9 +68,18 @@ class BookAppointment extends Component {
       fee: amount,
     };
 
-    const history = JSON.parse(localStorage.getItem('appointments') || '[]');
-    history.push(newBooking);
-    localStorage.setItem('appointments', JSON.stringify(history));
+    if (this.props.addAppointment) {
+      this.props.addAppointment(newBooking);
+    }
+
+    const updatedDoctors = doctors.map((doc) =>
+      doc.id === selectedDoctor.id
+        ? {
+            ...doc,
+            availableSlots: doc.availableSlots.filter((slot) => slot !== selectedSlot),
+          }
+        : doc
+    );
 
     this.setState({
       doctors: updatedDoctors,
@@ -126,7 +126,7 @@ class BookAppointment extends Component {
         </div>
 
         <div className="doctor-list">
-          {filteredDoctors.length === 0 && <p className="no-doctors">No doctors available for selected filters.</p>}
+          {filteredDoctors.length === 0 && <p className="no-doctors">No doctors available.</p>}
           {filteredDoctors.map((doc) => (
             <div className="doctor-card" key={doc.id}>
               <h3>{doc.name}</h3>

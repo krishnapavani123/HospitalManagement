@@ -1,54 +1,76 @@
-/* File: RegisterHospital.css */
-
-.register-hospital-container {
-  max-width: 500px;
-  margin: 3rem auto;
-  background: #ffffff;
-  padding: 2rem;
-  border-radius: 1rem;
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.07);
+.form-container {
+  padding: 30px;
+  background: #f6fbff;
+  border-radius: 12px;
+  box-shadow: 0 0 10px rgba(0,0,0,0.05);
+  max-width: 700px;
+  margin: 0 auto;
 }
 
-.form-title {
+.form-title, .view-heading {
+  color: #064273;
   text-align: center;
-  color: #2b6cb0;
-  font-size: 2rem;
-  margin-bottom: 1.5rem;
 }
 
-.hospital-form {
-  display: flex;
-  flex-direction: column;
-  gap: 1.25rem;
-}
-
-.form-group label {
-  font-weight: 600;
-  margin-bottom: 0.5rem;
-  display: block;
-  color: #4a5568;
-}
-
-.form-group input {
+input {
   width: 100%;
-  padding: 0.7rem;
-  border-radius: 0.5rem;
-  border: 1px solid #cbd5e0;
-  font-size: 1rem;
+  margin-bottom: 12px;
+  padding: 10px;
+  border: 1px solid #bbb;
+  border-radius: 6px;
+  font-size: 14px;
 }
 
-.submit-btn {
-  background-color: #38a169;
+.departments-section {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+button.submit-btn {
+  background: #0073e6;
   color: white;
+  padding: 10px 20px;
+  font-weight: bold;
   border: none;
-  padding: 0.8rem;
-  font-size: 1rem;
-  font-weight: 600;
-  border-radius: 0.5rem;
+  border-radius: 6px;
   cursor: pointer;
-  transition: background 0.2s ease;
 }
 
-.submit-btn:hover {
-  background-color: #2f855a;
+button.submit-btn:hover {
+  background: #005bb5;
+}
+
+.dept-list {
+  margin-bottom: 15px;
+}
+
+.dept-tag {
+  background: #d0e8ff;
+  color: #003366;
+  padding: 5px 10px;
+  border-radius: 20px;
+  display: inline-block;
+  margin: 5px 5px 0 0;
+  font-size: 13px;
+}
+
+.success-message {
+  color: green;
+  font-weight: 600;
+  margin-top: 10px;
+  text-align: center;
+}
+
+.hospital-list {
+  margin-top: 20px;
+}
+
+.hospital-card {
+  background: #fff;
+  padding: 15px;
+  border-radius: 10px;
+  margin-bottom: 15px;
+  border: 1px solid #d9ecf2;
+  box-shadow: 0 1px 6px rgba(0,0,0,0.05);
 }

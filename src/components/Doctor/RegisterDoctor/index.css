@@ -1,54 +1,81 @@
-/* File: RegisterDoctor.css */
-
-.register-doctor-container {
-  max-width: 550px;
-  margin: 3rem auto;
+.form-container {
+  max-width: 700px;
+  margin: 50px auto;
+  padding: 30px;
   background: #ffffff;
-  padding: 2rem;
-  border-radius: 1rem;
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.07);
+  border-radius: 12px;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.1);
 }
 
 .form-title {
+  font-size: 26px;
   text-align: center;
-  color: #2b6cb0;
-  font-size: 2rem;
-  margin-bottom: 1.5rem;
+  color: #0a4275;
+  font-weight: 700;
+  margin-bottom: 25px;
 }
 
-.doctor-form {
+form {
   display: flex;
   flex-direction: column;
-  gap: 1.25rem;
+  gap: 15px;
 }
 
-.form-group label {
+input,
+select {
+  padding: 12px 14px;
+  font-size: 15px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+}
+
+select[multiple] {
+  height: 120px;
+  background-color: #f9f9f9;
+  cursor: pointer;
+}
+
+label {
   font-weight: 600;
-  margin-bottom: 0.5rem;
-  display: block;
-  color: #4a5568;
+  margin-bottom: 5px;
+  color: #333;
 }
 
-.form-group input {
-  width: 100%;
-  padding: 0.7rem;
-  border-radius: 0.5rem;
-  border: 1px solid #cbd5e0;
-  font-size: 1rem;
+button[type="button"] {
+  padding: 8px 12px;
+  background-color: #e0e0e0;
+  color: #333;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  width: fit-content;
+  transition: background 0.3s;
+}
+
+button[type="button"]:hover {
+  background-color: #ccc;
 }
 
 .submit-btn {
-  background-color: #3182ce;
+  background-color: #0a4275;
   color: white;
+  font-weight: bold;
+  padding: 14px;
   border: none;
-  padding: 0.8rem;
-  font-size: 1rem;
-  font-weight: 600;
-  border-radius: 0.5rem;
+  border-radius: 10px;
+  font-size: 16px;
   cursor: pointer;
-  transition: background 0.2s ease;
+  transition: background 0.3s ease;
 }
 
 .submit-btn:hover {
-  background-color: #2b6cb0;
+  background-color: #06345e;
+}
+
+.success-message {
+  margin-top: 20px;
+  text-align: center;
+  color: green;
+  font-weight: 600;
+  font-size: 16px;
 }
