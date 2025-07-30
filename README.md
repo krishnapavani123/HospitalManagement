@@ -58,8 +58,8 @@ git clone https://github.com/your-username/hospital-management.git
 cd hospital-management
 npm install
 npm start
-🔗 Live Demo
-[🌐 Deploy on Vercel / Netlify / Render] — Add your link here
+🔗 https://hospital-management-two-rosy.vercel.app/
+
 
 📁 Folder Structure
 css
