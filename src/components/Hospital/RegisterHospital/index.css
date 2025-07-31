@@ -1,76 +1,175 @@
+/* General Form Container */
 .form-container {
-  padding: 30px;
-  background: #f6fbff;
-  border-radius: 12px;
-  box-shadow: 0 0 10px rgba(0,0,0,0.05);
-  max-width: 700px;
-  margin: 0 auto;
+  max-width: 600px;
+  margin: 40px auto;
+  padding: 20px;
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0,0,0,0.1);
 }
 
-.form-title, .view-heading {
-  color: #064273;
+.form-title {
   text-align: center;
+  margin-bottom: 20px;
+  font-size: 24px;
+  color: #333;
 }
 
-input {
+/* Input Fields */
+input[type="text"],
+input[type="number"] {
   width: 100%;
-  margin-bottom: 12px;
-  padding: 10px;
-  border: 1px solid #bbb;
-  border-radius: 6px;
-  font-size: 14px;
+  padding: 8px;
+  margin-bottom: 10px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
 }
 
+/* Department Section */
 .departments-section {
   display: flex;
   gap: 10px;
   margin-bottom: 10px;
 }
 
-button.submit-btn {
-  background: #0073e6;
-  color: white;
-  padding: 10px 20px;
-  font-weight: bold;
-  border: none;
-  border-radius: 6px;
-  cursor: pointer;
-}
-
-button.submit-btn:hover {
-  background: #005bb5;
-}
-
 .dept-list {
-  margin-bottom: 15px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 10px;
 }
 
 .dept-tag {
-  background: #d0e8ff;
-  color: #003366;
+  background-color: #007bff;
+  color: white;
   padding: 5px 10px;
   border-radius: 20px;
-  display: inline-block;
-  margin: 5px 5px 0 0;
-  font-size: 13px;
+  font-size: 14px;
 }
 
+/* Submit Button */
+.submit-btn {
+  background-color: #28a745;
+  color: white;
+  padding: 10px;
+  border: none;
+  font-size: 16px;
+  cursor: pointer;
+  width: 100%;
+  border-radius: 4px;
+}
+
+.submit-btn:hover {
+  background-color: #218838;
+}
+
+/* Success Message */
 .success-message {
   color: green;
-  font-weight: 600;
+  font-weight: bold;
   margin-top: 10px;
   text-align: center;
 }
 
+/* Hospital List */
+.view-heading {
+  margin-top: 30px;
+  font-size: 18px;
+  border-bottom: 1px solid #ccc;
+  padding-bottom: 5px;
+}
+
 .hospital-list {
-  margin-top: 20px;
+  margin-top: 10px;
 }
 
 .hospital-card {
-  background: #fff;
+  background: #f8f9fa;
   padding: 15px;
-  border-radius: 10px;
-  margin-bottom: 15px;
-  border: 1px solid #d9ecf2;
-  box-shadow: 0 1px 6px rgba(0,0,0,0.05);
+  margin-bottom: 10px;
+  border-radius: 6px;
+  box-shadow: 0 0 5px rgba(0,0,0,0.05);
+}
+
+/* Dashboard Styles */
+.dashboard-container {
+  max-width: 900px;
+  margin: 40px auto;
+  padding: 20px;
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0,0,0,0.1);
+}
+
+.dashboard-title {
+  text-align: center;
+  font-size: 28px;
+  margin-bottom: 30px;
+  color: #333;
+}
+
+/* Stat Cards */
+.stat-cards {
+  display: flex;
+  gap: 20px;
+  justify-content: space-between;
+  margin-bottom: 30px;
+}
+
+.card {
+  flex: 1;
+  background: #e9ecef;
+  padding: 20px;
+  border-radius: 6px;
+  text-align: center;
+}
+
+.card-title {
+  font-weight: bold;
+  margin-bottom: 10px;
+  color: #555;
+}
+
+.card-value {
+  font-size: 24px;
+  color: #007bff;
+}
+
+/* Tables */
+.analytics-section {
+  margin-top: 20px;
+}
+
+.analytics-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 10px;
+}
+
+.analytics-table th,
+.analytics-table td {
+  border: 1px solid #ccc;
+  padding: 8px;
+  text-align: left;
+}
+
+.analytics-table th {
+  background-color: #f0f0f0;
+}
+
+.amount {
+  font-weight: bold;
+  color: #28a745;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .stat-cards {
+    flex-direction: column;
+  }
+
+  .departments-section {
+    flex-direction: column;
+  }
 }

@@ -1,87 +1,106 @@
-/* File: DashboardHospital.css */
-
+/* Dashboard Container */
 .dashboard-container {
-  min-height: 100vh;
-  padding: 3rem 1rem;
-  background: linear-gradient(to bottom right, #f0f9ff, #f7e8ff);
+  max-width: 900px;
+  margin: 40px auto;
+  padding: 20px;
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0,0,0,0.1);
 }
 
+/* Title */
 .dashboard-title {
-  font-size: 2.5rem;
-  font-weight: 700;
-  color: #6b46c1;
   text-align: center;
-  margin-bottom: 2rem;
+  font-size: 28px;
+  margin-bottom: 30px;
+  color: #333;
 }
 
+/* Stat Cards */
 .stat-cards {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-  gap: 1.5rem;
-  margin-bottom: 2.5rem;
+  display: flex;
+  gap: 20px;
+  justify-content: space-between;
+  margin-bottom: 30px;
+  flex-wrap: wrap;
 }
 
 .card {
-  background: white;
-  padding: 1.5rem;
-  border-radius: 1rem;
-  border-left: 6px solid #805ad5;
-  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.05);
-  transition: transform 0.2s ease;
-}
-
-.card:hover {
-  transform: scale(1.03);
+  flex: 1;
+  background: #e9ecef;
+  padding: 20px;
+  border-radius: 6px;
+  text-align: center;
+  min-width: 250px;
 }
 
 .card-title {
-  font-size: 1rem;
-  color: #4a5568;
-  font-weight: 600;
-  margin-bottom: 0.5rem;
+  font-weight: bold;
+  margin-bottom: 10px;
+  color: #555;
 }
 
 .card-value {
-  font-size: 1.8rem;
-  font-weight: 700;
-  color: #2b6cb0;
+  font-size: 24px;
+  color: #007bff;
 }
 
+/* Analytics Section */
 .analytics-section {
-  max-width: 960px;
-  margin: 0 auto;
-  background: white;
-  padding: 1.5rem 2rem;
-  border-radius: 1rem;
-  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.04);
+  margin-top: 20px;
 }
 
 .analytics-section h3 {
-  font-size: 1.5rem;
-  font-weight: 600;
-  color: #6b46c1;
-  margin-bottom: 1rem;
+  margin-bottom: 10px;
+  color: #333;
 }
 
+/* Tables */
 .analytics-table {
   width: 100%;
   border-collapse: collapse;
+  margin-top: 10px;
 }
 
 .analytics-table th,
 .analytics-table td {
+  border: 1px solid #ccc;
+  padding: 10px;
   text-align: left;
-  padding: 0.75rem 0.5rem;
-  border-bottom: 1px solid #edf2f7;
-  font-size: 0.95rem;
+  font-size: 16px;
 }
 
 .analytics-table th {
-  background-color: #f3e8ff;
-  color: #5a67d8;
+  background-color: #f0f0f0;
+  font-weight: bold;
 }
 
-.analytics-table td.amount {
-  color: #38a169;
+.amount {
   font-weight: bold;
+  color: #28a745;
+}
+
+/* Error Message */
+.error {
+  color: red;
+  font-weight: bold;
+  text-align: center;
+  margin-top: 20px;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .stat-cards {
+    flex-direction: column;
+  }
+
+  .card {
+    margin-bottom: 15px;
+  }
+
+  .analytics-table th,
+  .analytics-table td {
+    font-size: 14px;
+    padding: 8px;
+  }
 }

@@ -1,57 +1,44 @@
-.appointment-wrapper,
-.history-container {
-  max-width: 800px;
-  margin: auto;
-  padding: 30px;
-  background: #f4f9fc;
+/* File: src/components/Patient/index.css */
+
+.history-wrapper {
+  max-width: 900px;
+  margin: 30px auto;
+  padding: 20px;
+  background-color: #fdfdfd;
   border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
-.filters select {
-  margin: 0 10px 20px 0;
-  padding: 10px;
+.history-wrapper h2 {
+  text-align: center;
+  margin-bottom: 20px;
+  color: #2c3e50;
+  font-size: 28px;
 }
 
-.doctor-list {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 20px;
-}
-
-.doctor-card {
-  background: #fff;
-  padding: 15px;
-  border-radius: 8px;
-  box-shadow: 0 0 5px #ccc;
-  width: 45%;
-}
-
-.booking-form input,
-.booking-form select {
+table {
   width: 100%;
-  padding: 10px;
-  margin: 10px 0;
+  border-collapse: collapse;
+  background-color: #fff;
 }
 
-.submit-btn {
-  background: #0077cc;
-  color: #fff;
-  padding: 10px 20px;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
+thead {
+  background-color: #3498db;
+  color: white;
 }
 
-.success-message {
-  margin-top: 15px;
-  color: green;
-  font-weight: bold;
+th, td {
+  padding: 12px 15px;
+  text-align: left;
+  border-bottom: 1px solid #ddd;
 }
 
-.history-card {
-  background: #fff;
-  padding: 15px;
-  margin-bottom: 15px;
-  border-left: 4px solid #0077cc;
-  border-radius: 5px;
+tr:hover {
+  background-color: #f1f1f1;
+}
+
+p {
+  text-align: center;
+  color: #999;
+  font-size: 16px;
 }

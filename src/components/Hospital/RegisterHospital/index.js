@@ -1,30 +1,25 @@
+// File: src/components/Hospital/RegisterHospital.jsx
 import React, { Component } from 'react';
+import { useNavigate } from 'react-router-dom';
 import './index.css';
 
 class RegisterHospital extends Component {
   state = {
     name: '',
     location: '',
-    departments: [],
     departmentInput: '',
-    hospitals: [],
+    departments: [],
     successMessage: '',
   };
 
-  componentDidMount() {
-    const stored = JSON.parse(localStorage.getItem('hospitals')) || [];
-    this.setState({ hospitals: stored });
-  }
-
-  handleChange = (e) => {
-    this.setState({ [e.target.name]: e.target.value });
-  };
+  handleChange = (e) => this.setState({ [e.target.name]: e.target.value });
 
   handleAddDepartment = () => {
     const { departmentInput, departments } = this.state;
-    if (departmentInput && !departments.includes(departmentInput)) {
+    const trimmed = departmentInput.trim();
+    if (trimmed && !departments.includes(trimmed)) {
       this.setState({
-        departments: [...departments, departmentInput],
+        departments: [...departments, trimmed],
         departmentInput: '',
       });
     }
@@ -33,31 +28,38 @@ class RegisterHospital extends Component {
   handleSubmit = (e) => {
     e.preventDefault();
     const { name, location, departments } = this.state;
-    const newHospital = { name, location, departments };
-
     const hospitals = JSON.parse(localStorage.getItem('hospitals')) || [];
+
+    if (hospitals.some(h => h.name.toLowerCase() === name.toLowerCase())) {
+      alert('Hospital name must be unique.');
+      return;
+    }
+
+    const newHospital = {
+      id: Date.now(),
+      name,
+      location,
+      departments,
+      associatedDoctors: [],
+    };
+
     hospitals.push(newHospital);
     localStorage.setItem('hospitals', JSON.stringify(hospitals));
+    localStorage.setItem('loggedInHospitalId', newHospital.id); // ✅ Track current hospital
 
     this.setState({
       name: '',
       location: '',
       departments: [],
       departmentInput: '',
-      hospitals,
       successMessage: '✅ Hospital registered successfully!',
     });
+
+    setTimeout(() => this.props.navigate('/dashboard/hospital'), 1000);
   };
 
   render() {
-    const {
-      name,
-      location,
-      departments,
-      departmentInput,
-      hospitals,
-      successMessage,
-    } = this.state;
+    const { name, location, departmentInput, departments, successMessage } = this.state;
 
     return (
       <div className="form-container">
@@ -94,24 +96,17 @@ class RegisterHospital extends Component {
               <span key={i} className="dept-tag">{dep}</span>
             ))}
           </div>
-          <button type="submit" className="submit-btn">Register</button>
+          <button type="submit" className="submit-btn">Register Hospital</button>
         </form>
-
         {successMessage && <p className="success-message">{successMessage}</p>}
-
-        <h3 className="view-heading">Registered Hospitals</h3>
-        <div className="hospital-list">
-          {hospitals.map((hosp, idx) => (
-            <div className="hospital-card" key={idx}>
-              <h4>{hosp.name}</h4>
-              <p><strong>Location:</strong> {hosp.location}</p>
-              <p><strong>Departments:</strong> {hosp.departments.join(', ')}</p>
-            </div>
-          ))}
-        </div>
       </div>
     );
   }
 }
 
-export default RegisterHospital;
+const RegisterHospitalWithNav = (props) => {
+  const navigate = useNavigate();
+  return <RegisterHospital {...props} navigate={navigate} />;
+};
+
+export default RegisterHospitalWithNav;

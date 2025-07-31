@@ -1,69 +1,45 @@
-/* File: LandingPage.css */
-
-.landing-wrapper {
-  min-height: 100vh;
-  background-image: url('https://wallpapercave.com/wp/wp8002958.jpg');
+.landing-container {
+  background-image: url('https://img.freepik.com/premium-photo/hospital-background-website-ai-generative_895799-9223.jpg');
   background-size: cover;
   background-position: center;
-  background-repeat: no-repeat;
+  height: 100vh;
+  position: relative;
   display: flex;
-  justify-content: center;
   align-items: center;
-  padding: 2rem;
-  backdrop-filter: brightness(0.8);
+  justify-content: center;
 }
 
-.landing-content {
-  background-color: rgba(255, 255, 255, 0.92);
-  padding: 2.5rem;
-  border-radius: 1.5rem;
-  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
-  max-width: 960px;
-  width: 100%;
+.overlay {
+  background-color: white;
+  color: rgb(64, 200, 246);
+  padding: 40px;
   text-align: center;
+  border-radius: 10px;
 }
 
-.landing-heading {
+.landing-title {
   font-size: 3rem;
-  font-weight: 800;
-  color: #75c7d2;
-  margin-bottom: 1rem;
+  margin-bottom: 10px;
 }
 
-.landing-heading span {
-  color: #d53f8c;
-}
-
-.landing-description {
+.landing-subtitle {
   font-size: 1.2rem;
-  color: #4a5568;
-  margin-bottom: 2.5rem;
+  margin-bottom: 30px;
+  color:rgb(181, 101, 206);
 }
 
-.landing-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-  gap: 1.25rem;
-}
-
-.landing-card {
-  padding: 1rem;
-  border-radius: 1rem;
+.landing-buttons .landing-btn {
+  background-color: #0c9;
   color: white;
-  font-weight: 600;
+  padding: 12px 25px;
+  margin: 10px;
+  border: none;
+  border-radius: 5px;
   text-decoration: none;
-  transition: transform 0.2s ease;
-  font-size: 1.05rem;
-  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.1);
+  font-weight: bold;
+  transition: background-color 0.3s ease;
 }
 
-.landing-card:hover {
-  transform: translateY(-6px);
+.landing-buttons .landing-btn:hover {
+  background-color: #087;
 }
-
-.landing-card.purple { background: #6b46c1; }
-.landing-card.blue   { background: #3182ce; }
-.landing-card.green  { background: #38a169; }
-.landing-card.yellow { background: #d69e2e; }
-.landing-card.pink   { background: #d53f8c; }
-.landing-card.gray   { background: #4a5568; }

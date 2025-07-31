@@ -1,5 +1,7 @@
+// File: src/components/Doctor/RegisterDoctor.jsx
 import React, { Component } from 'react';
-import ViewDoctors from '../ViewDoctors';
+
+import DoctorAssociation from '../DoctorAssociation';
 import './index.css';
 
 class RegisterDoctor extends Component {
@@ -8,183 +10,63 @@ class RegisterDoctor extends Component {
     qualifications: '',
     specializations: [],
     experience: '',
-    hospital: '',
-    availableSlots: [''],
-    fee: '',
-    hospitals: [],
-    matchedDepartments: [],
-    doctors: []
+    success: false,
   };
 
-  componentDidMount() {
-    const hospitals = JSON.parse(localStorage.getItem('hospitals')) || [];
-    this.setState({ hospitals });
-
-    const doctors = JSON.parse(localStorage.getItem('doctors')) || [];
-    this.setState({ doctors });
-  }
-
-  handleChange = (e) => {
-    this.setState({ [e.target.name]: e.target.value });
-  };
+  handleChange = (e) => this.setState({ [e.target.name]: e.target.value });
 
   handleSpecializationChange = (e) => {
-    const options = [...e.target.options].filter(option => option.selected).map(option => option.value);
-    this.setState({ specializations: options });
-  };
-
-  handleSlotChange = (index, value) => {
-    const slots = [...this.state.availableSlots];
-    slots[index] = value;
-    this.setState({ availableSlots: slots });
-  };
-
-  addSlot = () => {
-    this.setState(prev => ({ availableSlots: [...prev.availableSlots, ''] }));
-  };
-
-  validateDepartments = () => {
-    const hospital = this.state.hospitals.find(h => h.name === this.state.hospital);
-    if (!hospital) return false;
-    const matched = hospital.departments.filter(dep => this.state.specializations.includes(dep));
-    this.setState({ matchedDepartments: matched });
-    return matched.length > 0;
-  };
-
-  hasConflictingSlot = (newSlots, currentHospital) => {
-    const doctors = this.state.doctors;
-    for (let doc of doctors) {
-      for (let assoc of doc.associations || []) {
-        if (assoc.hospitalName !== currentHospital) {
-          for (let slot of assoc.availableSlots) {
-            if (newSlots.includes(slot)) return true;
-          }
-        }
-      }
-    }
-    return false;
+    const selected = Array.from(e.target.selectedOptions).map(o => o.value);
+    this.setState({ specializations: selected });
   };
 
   handleSubmit = (e) => {
     e.preventDefault();
-
-    const {
-      name, qualifications, specializations, experience,
-      hospital, availableSlots, fee, matchedDepartments, doctors
-    } = this.state;
-
-    if (!this.validateDepartments()) {
-      alert('Doctor specialization must match at least one department in the selected hospital.');
-      return;
-    }
-
-    if (this.hasConflictingSlot(availableSlots, hospital)) {
-      alert('Selected time slot conflicts with another hospital.');
-      return;
-    }
-
+    const { name, qualifications, specializations, experience } = this.state;
     const newDoctor = {
+      id: Date.now(),
       name,
       qualifications,
       specializations,
       experience,
-      associations: [
-        {
-          hospitalName: hospital,
-          matchedDepartments,
-          availableSlots,
-          fee,
-        },
-      ],
+      associations: [],
     };
-
-    const updatedDoctors = [...doctors, newDoctor];
-    localStorage.setItem('doctors', JSON.stringify(updatedDoctors));
-
-    this.setState({
-      name: '',
-      qualifications: '',
-      specializations: [],
-      experience: '',
-      hospital: '',
-      availableSlots: [''],
-      fee: '',
-      doctors: updatedDoctors,
-    });
+    const doctors = JSON.parse(localStorage.getItem('doctors')) || [];
+    doctors.push(newDoctor);
+    localStorage.setItem('doctors', JSON.stringify(doctors));
+    localStorage.setItem('loggedInDoctorId', newDoctor.id); // Simulate login
+    this.setState({ success: true });
   };
 
   render() {
-    const {
-      name, qualifications, specializations, experience, hospital,
-      availableSlots, fee, hospitals, doctors
-    } = this.state;
+    const { name, qualifications, specializations, experience, success } = this.state;
+
+    if (success) {
+      return (
+        <div>
+       
+          <DoctorAssociation />
+        </div>
+      );
+    }
 
     return (
-      <div className="form-container">
-        <h2 className="form-title">Register Doctor</h2>
+      <div className="doctor-register-container">
+        <h2>Register Doctor</h2>
         <form onSubmit={this.handleSubmit}>
-          <input name="name" placeholder="Doctor Name" value={name} onChange={this.handleChange} required />
-          <input name="qualifications" placeholder="Qualifications" value={qualifications} onChange={this.handleChange} required />
-
-          <label htmlFor="specializations">Select Specializations</label>
-          <select
-            id="specializations"
-            name="specializations"
-            value={specializations}
-            onChange={this.handleSpecializationChange}
-            multiple
-            required
-          >
-            <option value="Cardiology">Cardiology</option>
-            <option value="Neurology">Neurology</option>
-            <option value="Pediatrics">Pediatrics</option>
-            <option value="Orthopedics">Orthopedics</option>
-            <option value="Dermatology">Dermatology</option>
+          <input name="name" value={name} placeholder="Doctor Name" onChange={this.handleChange} required />
+          <input name="qualifications" value={qualifications} placeholder="Qualifications" onChange={this.handleChange} required />
+          <label>Select Specializations</label>
+          <select multiple onChange={this.handleSpecializationChange} value={specializations}>
+            <option>Cardiology</option>
+            <option>Neurology</option>
+            <option>Orthopedics</option>
+            <option>Pediatrics</option>
+            <option>Dermatology</option>
           </select>
-
-          <input
-            name="experience"
-            type="number"
-            placeholder="Years of Experience"
-            value={experience}
-            onChange={this.handleChange}
-            required
-          />
-
-          <label htmlFor="hospital">Select Hospital</label>
-          <select name="hospital" id="hospital" value={hospital} onChange={this.handleChange} required>
-            <option value="">-- Select Hospital --</option>
-            {hospitals.map((hosp, idx) => (
-              <option key={idx} value={hosp.name}>{hosp.name}</option>
-            ))}
-          </select>
-
-          <label>Available Time Slots</label>
-          {availableSlots.map((slot, idx) => (
-            <input
-              key={idx}
-              type="datetime-local"
-              value={slot}
-              onChange={(e) => this.handleSlotChange(idx, e.target.value)}
-              required
-            />
-          ))}
-          <button type="button" onClick={this.addSlot}>+ Add Slot</button>
-
-          <input
-            name="fee"
-            type="number"
-            placeholder="Consultation Fee (₹)"
-            value={fee}
-            onChange={this.handleChange}
-            required
-          />
-
-          <button type="submit" className="submit-btn">Register</button>
+          <input name="experience" value={experience} placeholder="Experience in years" type="number" onChange={this.handleChange} required />
+          <button type="submit">Register</button>
         </form>
-
-        <hr />
-        <ViewDoctors doctors={doctors} />
       </div>
     );
   }

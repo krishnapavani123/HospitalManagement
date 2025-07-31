@@ -1,4 +1,5 @@
-import React, { Component } from 'react';
+// File: src/components/Patient/RegisterPatient.jsx
+import { Component } from 'react';
 import './index.css';
 
 class RegisterPatient extends Component {
@@ -7,7 +8,7 @@ class RegisterPatient extends Component {
     gender: '',
     dob: '',
     uniqueId: '',
-    successMessage: ''
+    successMessage: '',
   };
 
   handleChange = (e) => {
@@ -17,20 +18,12 @@ class RegisterPatient extends Component {
   handleSubmit = (e) => {
     e.preventDefault();
     const { name, gender, dob, uniqueId } = this.state;
-
     const patient = { name, gender, dob, uniqueId };
-
-    const patients = JSON.parse(localStorage.getItem('patients')) || [];
-    patients.push(patient);
-    localStorage.setItem('patients', JSON.stringify(patients));
-
-    this.setState({
-      name: '',
-      gender: '',
-      dob: '',
-      uniqueId: '',
-      successMessage: '✅ Patient registered successfully!'
-    });
+    localStorage.setItem('loggedInPatient', JSON.stringify(patient));
+    this.setState({ successMessage: '✅ Registered successfully!' });
+    setTimeout(() => {
+      window.location.href = '/book-appointment';
+    }, 1500);
   };
 
   render() {
@@ -38,42 +31,19 @@ class RegisterPatient extends Component {
 
     return (
       <div className="form-container">
-        <h2 className="form-title">Register Patient</h2>
+        <h2 className="form-title">Register as Patient</h2>
         <form onSubmit={this.handleSubmit}>
-          <input
-            type="text"
-            name="name"
-            placeholder="Patient Name"
-            value={name}
-            onChange={this.handleChange}
-            required
-          />
+          <input name="name" value={name} onChange={this.handleChange} placeholder="Full Name" required />
           <select name="gender" value={gender} onChange={this.handleChange} required>
             <option value="">Select Gender</option>
-            <option value="Male">Male</option>
             <option value="Female">Female</option>
+            <option value="Male">Male</option>
             <option value="Other">Other</option>
           </select>
-          <input
-            type="date"
-            name="dob"
-            placeholder="Date of Birth"
-            value={dob}
-            onChange={this.handleChange}
-            required
-          />
-          <input
-            type="text"
-            name="uniqueId"
-            placeholder="Aadhar / Passport ID"
-            value={uniqueId}
-            onChange={this.handleChange}
-            required
-          />
-
+          <input type="date" name="dob" value={dob} onChange={this.handleChange} required />
+          <input name="uniqueId" value={uniqueId} onChange={this.handleChange} placeholder="Aadhar or Passport Number" required />
           <button type="submit" className="submit-btn">Register</button>
         </form>
-
         {successMessage && <p className="success-message">{successMessage}</p>}
       </div>
     );

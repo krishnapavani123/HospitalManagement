@@ -1,42 +1,47 @@
-// File: src/components/Doctor/DashboardDoctor.jsx
-import  { Component } from 'react';
+// File: src/components/Doctor/DoctorDashboard.jsx
+import React, { Component } from 'react';
+import DoctorNavbar from '../DoctorNavbar';
 import './index.css';
 
-class DashboardDoctor extends Component {
+class DoctorDashboard extends Component {
   state = {
-    consultations: 18,
-    totalEarnings: 7200,
-    earningsByHospital: [
-      { hospital: 'Apollo', earnings: 4200 },
-      { hospital: 'Care Hospitals', earnings: 3000 },
-    ],
+    doctor: null,
+    appointments: [],
   };
 
+  componentDidMount() {
+    const doctorId = parseInt(localStorage.getItem('loggedInDoctorId'));
+    const doctors = JSON.parse(localStorage.getItem('doctors')) || [];
+    const doctor = doctors.find(d => d.id === doctorId);
+    const appointments = JSON.parse(localStorage.getItem('appointments')) || [];
+    const doctorAppointments = appointments.filter(a => a.doctor === doctor?.name);
+    this.setState({ doctor, appointments: doctorAppointments });
+  }
+
   render() {
-    const { consultations, totalEarnings, earningsByHospital } = this.state;
+    const { doctor, appointments } = this.state;
+    if (!doctor) return <p className="error">Doctor not logged in.</p>;
+
+    const totalEarnings = appointments.reduce((acc, a) => acc + parseInt(a.fee || 0) * 0.6, 0);
+
+    const earningsByHospital = {};
+    appointments.forEach((a) => {
+      if (!earningsByHospital[a.hospital]) earningsByHospital[a.hospital] = 0;
+      earningsByHospital[a.hospital] += parseInt(a.fee || 0) * 0.6;
+    });
 
     return (
-      <div className="doctor-dashboard">
-        <h2 className="dashboard-title">Doctor Dashboard</h2>
-
-        <div className="dashboard-metrics">
-          <div className="metric-box blue">
-            <h3>{consultations}</h3>
-            <p>Total Consultations</p>
-          </div>
-          <div className="metric-box green">
-            <h3>₹{totalEarnings}</h3>
-            <p>Total Earnings</p>
-          </div>
-        </div>
-
-        <div className="earnings-breakdown">
-          <h4>Earnings by Hospital</h4>
+      <div>
+        <DoctorNavbar />
+        <div className="dashboard-container">
+          <h2>Doctor Dashboard</h2>
+          <p><strong>Welcome Dr. {doctor.name}</strong></p>
+          <p><strong>Total Consultations:</strong> {appointments.length}</p>
+          <p><strong>Total Earnings:</strong> ₹{totalEarnings}</p>
+          <h3>Earnings by Hospital:</h3>
           <ul>
-            {earningsByHospital.map((item, index) => (
-              <li key={index}>
-                {item.hospital}: ₹{item.earnings}
-              </li>
+            {Object.entries(earningsByHospital).map(([hospital, amt], i) => (
+              <li key={i}>{hospital}: ₹{amt}</li>
             ))}
           </ul>
         </div>
@@ -45,4 +50,4 @@ class DashboardDoctor extends Component {
   }
 }
 
-export default DashboardDoctor;
+export default DoctorDashboard;

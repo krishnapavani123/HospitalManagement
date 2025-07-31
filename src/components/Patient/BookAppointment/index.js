@@ -1,167 +1,169 @@
 // File: src/components/Patient/BookAppointment.jsx
-import { Component } from 'react';
+import React, { Component } from 'react';
+import PatientNavbar from '../PatientNavbar';
 import './index.css';
 
 class BookAppointment extends Component {
   state = {
-    doctors: [
-      {
-        id: 1,
-        name: 'Dr. Anjali Rao',
-        specialization: 'Cardiology',
-        hospital: 'Apollo',
-        availableSlots: ['2025-08-01T10:00', '2025-08-01T14:00'],
-        fee: 700,
-      },
-      {
-        id: 2,
-        name: 'Dr. Vinay Mehta',
-        specialization: 'Pediatrics',
-        hospital: 'Yashoda',
-        availableSlots: ['2025-08-01T09:00', '2025-08-01T11:30'],
-        fee: 500,
-      },
-    ],
-    selectedSpecialization: '',
-    selectedHospital: '',
+    doctors: [],
     selectedDoctor: null,
     selectedSlot: '',
     amount: '',
     successMessage: '',
+    specializationFilter: '',
+    hospitalFilter: ''
   };
 
-  handleFilterChange = (e) => {
-    this.setState({
-      [e.target.name]: e.target.value,
-      selectedDoctor: null,
-      selectedSlot: '',
-      amount: '',
-      successMessage: '',
-    });
+  componentDidMount() {
+    const doctors = JSON.parse(localStorage.getItem('doctors')) || [];
+    this.setState({ doctors });
+  }
+
+  filterDoctors = () => {
+    const { doctors, specializationFilter, hospitalFilter } = this.state;
+    return doctors.filter((doctor) =>
+      doctor.associations.some((assoc) =>
+        (!specializationFilter || doctor.specializations.includes(specializationFilter)) &&
+        (!hospitalFilter || assoc.hospitalName === hospitalFilter)
+      )
+    );
   };
 
-  selectDoctor = (doctor) => {
+  selectDoctor = (doctor, assoc) => {
     this.setState({
       selectedDoctor: doctor,
+      selectedAssoc: assoc,
       selectedSlot: '',
       amount: '',
-      successMessage: '',
+      successMessage: ''
     });
-  };
-
-  handleSlotChange = (e) => {
-    this.setState({ selectedSlot: e.target.value });
-  };
-
-  handleAmountChange = (e) => {
-    this.setState({ amount: e.target.value });
   };
 
   handleBooking = (e) => {
     e.preventDefault();
-    const { selectedDoctor, selectedSlot, amount, doctors } = this.state;
+    const { selectedDoctor, selectedAssoc, selectedSlot, amount } = this.state;
 
-    const newBooking = {
-      doctor: selectedDoctor.name,
-      hospital: selectedDoctor.hospital,
+    const appointment = {
+      doctorName: selectedDoctor.name,
+      hospital: selectedAssoc.hospitalName,
       slot: selectedSlot,
-      fee: amount,
+      fee: amount
     };
 
-    if (this.props.addAppointment) {
-      this.props.addAppointment(newBooking);
-    }
+    const history = JSON.parse(localStorage.getItem('appointments')) || [];
+    history.push(appointment);
+    localStorage.setItem('appointments', JSON.stringify(history));
 
-    const updatedDoctors = doctors.map((doc) =>
-      doc.id === selectedDoctor.id
-        ? {
-            ...doc,
-            availableSlots: doc.availableSlots.filter((slot) => slot !== selectedSlot),
-          }
-        : doc
-    );
+    // Update localStorage to remove booked slot
+    const updatedDoctors = this.state.doctors.map((doc) => {
+      if (doc.name === selectedDoctor.name) {
+        return {
+          ...doc,
+          associations: doc.associations.map((assoc) =>
+            assoc.hospitalName === selectedAssoc.hospitalName
+              ? {
+                  ...assoc,
+                  availableSlots: assoc.availableSlots.filter((s) => s !== selectedSlot)
+                }
+              : assoc
+          )
+        };
+      }
+      return doc;
+    });
 
+    localStorage.setItem('doctors', JSON.stringify(updatedDoctors));
     this.setState({
       doctors: updatedDoctors,
       selectedDoctor: null,
+      selectedAssoc: null,
       selectedSlot: '',
       amount: '',
-      successMessage: `✅ Appointment booked with ${selectedDoctor.name} at ${selectedSlot}`,
+      successMessage: `✅ Appointment booked with ${selectedDoctor.name} at ${selectedSlot}`
     });
   };
 
   render() {
     const {
-      doctors,
-      selectedSpecialization,
-      selectedHospital,
       selectedDoctor,
+      selectedAssoc,
       selectedSlot,
       amount,
       successMessage,
+      specializationFilter,
+      hospitalFilter
     } = this.state;
 
-    const filteredDoctors = doctors.filter(
-      (doc) =>
-        (selectedSpecialization === '' || doc.specialization === selectedSpecialization) &&
-        (selectedHospital === '' || doc.hospital === selectedHospital)
-    );
+    const filteredDoctors = this.filterDoctors();
 
     return (
-      <div className="appointment-wrapper">
-        <h2 className="appointment-heading">Book Your Appointment</h2>
+      <div>
+        <PatientNavbar />
+        <div className="appointment-wrapper">
+          <h2>Book Appointment</h2>
 
-        <div className="filters">
-          <select name="selectedSpecialization" value={selectedSpecialization} onChange={this.handleFilterChange}>
-            <option value="">All Specializations</option>
-            <option value="Cardiology">Cardiology</option>
-            <option value="Pediatrics">Pediatrics</option>
-          </select>
-
-          <select name="selectedHospital" value={selectedHospital} onChange={this.handleFilterChange}>
-            <option value="">All Hospitals</option>
-            <option value="Apollo">Apollo</option>
-            <option value="Yashoda">Yashoda</option>
-          </select>
-        </div>
-
-        <div className="doctor-list">
-          {filteredDoctors.length === 0 && <p className="no-doctors">No doctors available.</p>}
-          {filteredDoctors.map((doc) => (
-            <div className="doctor-card" key={doc.id}>
-              <h3>{doc.name}</h3>
-              <p><strong>Specialization:</strong> {doc.specialization}</p>
-              <p><strong>Hospital:</strong> {doc.hospital}</p>
-              <p><strong>Fee:</strong> ₹{doc.fee}</p>
-              <button onClick={() => this.selectDoctor(doc)}>View Slots</button>
-            </div>
-          ))}
-        </div>
-
-        {selectedDoctor && (
-          <form className="booking-form" onSubmit={this.handleBooking}>
-            <h3>Select Slot for {selectedDoctor.name}</h3>
-            <select value={selectedSlot} onChange={this.handleSlotChange} required>
-              <option value="">Choose time slot</option>
-              {selectedDoctor.availableSlots.map((slot, idx) => (
-                <option key={idx} value={slot}>{slot}</option>
-              ))}
+          <div className="filters">
+            <select
+              value={specializationFilter}
+              onChange={(e) => this.setState({ specializationFilter: e.target.value })}
+            >
+              <option value="">All Specializations</option>
+              <option value="Cardiology">Cardiology</option>
+              <option value="Neurology">Neurology</option>
+              <option value="Pediatrics">Pediatrics</option>
+              <option value="Orthopedics">Orthopedics</option>
+              <option value="Dermatology">Dermatology</option>
             </select>
 
-            <input
-              type="number"
-              placeholder="Enter consultation amount"
-              value={amount}
-              onChange={this.handleAmountChange}
-              min="0"
-              required
-            />
+            <select
+              value={hospitalFilter}
+              onChange={(e) => this.setState({ hospitalFilter: e.target.value })}
+            >
+              <option value="">All Hospitals</option>
+              {(JSON.parse(localStorage.getItem('hospitals')) || []).map((h, i) => (
+                <option key={i} value={h.name}>{h.name}</option>
+              ))}
+            </select>
+          </div>
 
-            <button type="submit" className="submit-btn">Confirm Booking</button>
-          </form>
-        )}
+          <div className="doctor-list">
+            {filteredDoctors.map((doctor, i) =>
+              doctor.associations.map((assoc, j) => (
+                <div key={`${i}-${j}`} className="doctor-card">
+                  <h3>{doctor.name}</h3>
+                  <p><strong>Specializations:</strong> {doctor.specializations.join(', ')}</p>
+                  <p><strong>Hospital:</strong> {assoc.hospitalName}</p>
+                  <p><strong>Fee:</strong> ₹{assoc.fee}</p>
+                  <button onClick={() => this.selectDoctor(doctor, assoc)}>View Slots</button>
+                </div>
+              ))
+            )}
+          </div>
 
-        {successMessage && <p className="success-message">{successMessage}</p>}
+          {selectedDoctor && selectedAssoc && (
+            <form className="booking-form" onSubmit={this.handleBooking}>
+              <h3>Select Slot for {selectedDoctor.name}</h3>
+              <select value={selectedSlot} onChange={(e) => this.setState({ selectedSlot: e.target.value })} required>
+                <option value="">Choose slot</option>
+                {selectedAssoc.availableSlots.map((slot, i) => (
+                  <option key={i} value={slot}>{slot}</option>
+                ))}
+              </select>
+
+              <input
+                type="number"
+                placeholder="Enter consultation amount"
+                value={amount}
+                onChange={(e) => this.setState({ amount: e.target.value })}
+                required
+              />
+
+              <button type="submit" className="submit-btn">Confirm Booking</button>
+            </form>
+          )}
+
+          {successMessage && <p className="success-message">{successMessage}</p>}
+        </div>
       </div>
     );
   }

@@ -1,48 +1,36 @@
-// File: src/components/Shared/Navbar.jsx
-import  { Component } from 'react';
 import { Link } from 'react-router-dom';
 import './index.css';
 
-class Navbar extends Component {
-  state = {
-    isMenuOpen: false,
-  };
-
-  toggleMenu = () => {
-    this.setState((prev) => ({ isMenuOpen: !prev.isMenuOpen }));
-  };
-
-  render() {
-    const { isMenuOpen } = this.state;
-
-    return (
-      <nav className="navbar">
-        <div className="navbar-brand">
-          <img
-            src="https://i.pinimg.com/736x/1b/01/da/1b01daababe520b9430425a3ed6a75c9.jpg"
-            alt="Logo"
-            className="navbar-logo"
-          />
-        </div>
-
-        <button className="menu-toggle" onClick={this.toggleMenu}>
-          ☰
-        </button>
-
-        <ul className={`navbar-links ${isMenuOpen ? 'active' : ''}`}>
-          <li><Link to="/">Home</Link></li>
-          <li><Link to="/register/hospital">Hospital</Link></li>
-          <li><Link to="/register/doctor">Doctor</Link></li>
-          <li><Link to="/register/patient">Patient</Link></li>
-          <li><Link to="/bookappointment">Book</Link></li>
-
-          <li><Link to="/dashboard/hospital">Admin</Link></li>
-          <li><Link to="/dashboard/doctor">Doctor Dashboard</Link></li>
-          <li><Link to="/history/patient">History</Link></li>
-        </ul>
-      </nav>
-    );
-  }
-}
+const Navbar = ({ role, logout }) => {
+  return (
+    <nav className="navbar">
+      <img
+        src="https://i.pinimg.com/736x/f2/75/56/f275568548f963f2d178be9dcd187da7.jpg"
+        alt="HealthCare Logo"
+        className="navbar-logo-img"
+      />
+      <ul className="navbar-links">
+        {role === 'patient' && (
+          <>
+            <li><Link to="/patient/book">Book</Link></li>
+            <li><Link to="/patient/history">History</Link></li>
+          </>
+        )}
+        {role === 'doctor' && (
+          <>
+            <li><Link to="/doctor/dashboard">Appointments</Link></li>
+          </>
+        )}
+        {role === 'admin' && (
+          <>
+            <li><Link to="/admin/register-hospital">Register Hospital</Link></li>
+            <li><Link to="/admin/dashboard">Dashboard</Link></li>
+          </>
+        )}
+        {role && <li><button onClick={logout}>Logout</button></li>}
+      </ul>
+    </nav>
+  );
+};
 
 export default Navbar;
